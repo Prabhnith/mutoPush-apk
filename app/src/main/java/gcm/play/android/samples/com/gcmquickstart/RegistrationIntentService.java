@@ -30,15 +30,10 @@ import com.google.android.gms.iid.InstanceID;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
 import java.net.URL;
 
 public class RegistrationIntentService extends IntentService {
@@ -101,7 +96,7 @@ public class RegistrationIntentService extends IntentService {
          * @param token The new token.
          */
         Log.i(TAG, "in sendRegistrationToServer function");
-        URL url = new URL("http://192.168.1.89:8080/receivetoken");
+        URL url = new URL("http://192.168.1.136:8080/receivetoken");
         HttpURLConnection urlConn = null;
         urlConn = (HttpURLConnection) url.openConnection();
         urlConn.setDoInput(true);

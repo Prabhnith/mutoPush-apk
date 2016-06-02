@@ -75,6 +75,7 @@ public class MyGcmListenerService extends GcmListenerService {
          * that a message was received.
          */
 
+
         try {
             sendNotification(message);
         } catch (IOException e) {
@@ -82,6 +83,7 @@ public class MyGcmListenerService extends GcmListenerService {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
 
         // [END_EXCLUDE]
     }
@@ -93,9 +95,9 @@ public class MyGcmListenerService extends GcmListenerService {
      * @param message GCM message received.
      */
     private void sendNotification(String message) throws IOException, JSONException {
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, notification.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent,
                 PendingIntent.FLAG_ONE_SHOT);
 
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
@@ -104,51 +106,13 @@ public class MyGcmListenerService extends GcmListenerService {
                 .setContentTitle("GCM Message")
                 .setContentText(message)
                 .setAutoCancel(true)
-                .setSound(defaultSoundUri)
-                .setContentIntent(pendingIntent);
-
+                .setOngoing(true)
+                .setSound(defaultSoundUri);
+//                .setContentIntent(pendingIntent);
+        notificationBuilder.setContentIntent(pendingIntent);
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
-
-     //   sendResponceBack();  //SEND CLICKED RESPONSE TO SERVER
-
     }
-
-    private void sendResponceBack() throws IOException, JSONException {
-
-        URL url = new URL("http://192.168.1.89:8080/receivetoken");
-        HttpURLConnection urlConn = null;
-        urlConn = (HttpURLConnection) url.openConnection();
-        urlConn.setDoInput(true);
-        urlConn.setDoOutput(true);
-        urlConn.setRequestMethod("POST");
-        urlConn.setRequestProperty("Content-Type", "application/json");
-        urlConn.connect();
-
-        DataOutputStream output = null;
-        DataInputStream input = null;
-        output = new DataOutputStream(urlConn.getOutputStream());
-
-        /*Construct the POST data.*/
-        JSONObject obj = new JSONObject();
-
-        obj.put(" User clicked on the notification.", 1);
-        obj.put("devicePlatform","Android");
-        Log.i(TAG, "USER_CLCIKED_ON_THE_NOTIFICATION ");
-        String content = obj.toString();
-
-/* Send the request data.*/
-        output.writeBytes(content);
-        output.flush();
-        output.close();
-
-
-/* Get response data.*/
-        String response = null;
-        input = new DataInputStream(urlConn.getInputStream());
-        while (null != ((response = input.readLine()))) {
-            System.out.println(response);
-            input.close();
-        }}}
+}

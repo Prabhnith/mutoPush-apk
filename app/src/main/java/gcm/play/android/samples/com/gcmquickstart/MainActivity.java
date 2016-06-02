@@ -16,6 +16,7 @@
 
 package gcm.play.android.samples.com.gcmquickstart;
 
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -49,8 +50,14 @@ public class MainActivity extends AppCompatActivity {
 
         mRegistrationProgressBar = (ProgressBar) findViewById(R.id.registrationProgressBar);
         mRegistrationBroadcastReceiver = new BroadcastReceiver() {
+            @SuppressWarnings("WrongConstant")
             @Override
             public void onReceive(Context context, Intent intent) {
+//                Intent myIntent = new Intent(context, notification.class);
+//                PendingIntent pendingIntent = PendingIntent.getActivity(
+//                        context,0,myIntent,
+//                        Intent.FLAG_ACTIVITY_NEW_TASK);
+
                 mRegistrationProgressBar.setVisibility(ProgressBar.GONE);
                 SharedPreferences sharedPreferences =
                         PreferenceManager.getDefaultSharedPreferences(context);
